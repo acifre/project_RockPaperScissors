@@ -50,26 +50,44 @@ struct ContentView: View {
         NavigationView {
             
             VStack {
+
                 Spacer()
-                Spacer()
-                Text("Computer's Pick: \(choices[computerChoice])")
-                    .font(.largeTitle.weight(.bold))
-                    .frame(width: 350, height: 100)
-                    .background(.blue)
-                    .cornerRadius(35)
-                    .shadow(color: .white, radius: 3)
-                    .padding()
-                Text("For the player to _**\(shouldWin ? "WIN" : "LOSE")**_ they must pick...")
-                    .font(.title2.weight(.semibold))
-                    .frame(width: 250, height: 100)
-                    .background(.secondary)
-                    .cornerRadius(35)
-                    .multilineTextAlignment(.trailing)
+                VStack {
+                    HStack {
+                        Text("Computer's Pick \n\(choices[computerChoice])")
+                            .font(.largeTitle.weight(.bold))
+                            .frame(width: 350, height: 100)
+                            .background(.blue)
+                            .cornerRadius(35)
+                            .shadow(color: .black, radius: 3)
+                            .padding()
+                            .multilineTextAlignment(.leading)
+                        Spacer()
+                    }
+                    
+                    HStack {
+                        Spacer()
+                        Text("For the player to _**\(shouldWin ? "WIN" : "LOSE")**_ they must pick...")
+                            .font(.title2.weight(.semibold))
+                            .padding()
+                            .frame(width: 250, height: 100)
+                            .background(.gray)
+                            .cornerRadius(35)
+                            .shadow(color: .black, radius: 3)
+                        .multilineTextAlignment(.leading)
+                    }
+                }
+                .padding()
+                .frame(maxWidth: 400, maxHeight: 300)
+//                .border(.black)
+                .background(.white)
+                .cornerRadius(35)
+                
                 
                 Spacer()
                 Spacer()
                 
-                HStack {
+                HStack(spacing: 20) {
                     ForEach(0...2, id: \.self) { index in
                         Button(choices[index]) {
                             playerChoice = index
@@ -82,10 +100,14 @@ struct ContentView: View {
                         .frame(width: 100, height: 100)
                         .background(.blue)
                         .cornerRadius(35)
-                        .shadow(color: .white, radius: 2)
+                        .shadow(color: .black, radius: 2)
                         
                     }
                 }
+                .frame(width: 350, height: 100)
+                .padding()
+                .background(.white)
+                .cornerRadius(35)
                 Spacer()
                 
             }
@@ -95,6 +117,7 @@ struct ContentView: View {
             } message: {
                 Text("\(correctResult ? "Player won!" : "Player lost!")")
             }
+            .navigationTitle("RockPaperScissors")
         }
         
     }
