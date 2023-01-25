@@ -37,13 +37,10 @@ struct ContentView: View {
         default:
             return 0
         }
-        
     }
     
     var playerWon: Bool  {
-        
         playerChoice == toWinChoice
-        
     }
     
     var body: some View {
