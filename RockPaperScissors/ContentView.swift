@@ -45,16 +45,24 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            Image(systemName: "globe")
             Text("Rock Paper Scissors!")
+            HStack {
+                ForEach(choices, id: \.self) { choice in
+                    Button(choice) {
+                        
+                    }
+                    .foregroundColor(.white)
+                    .frame(width: 100, height: 100)
+                    .background(.blue)
+                    .cornerRadius(20)
+                }
+            }
         }
         .padding()
     }
     
     func checkChoice(objective: Bool, choice: Int) -> Bool {
-        
         objective && playerWon
-        
     }
     
     func resetRound() {
