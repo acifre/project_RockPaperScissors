@@ -18,9 +18,11 @@ struct ContentView: View {
     @State private var computerChoice = 0
     @State private var playerChoice = 0
     @State private var shouldWin = false
+    @State private var showResult = false
+    @State private var correctResult = false
     
     
-    let choices = ["Rock", "Paper", "Scissors"]
+    let choices = ["👊", "🖐️", "✌️"]
     
     var toWinChoice: Int {
         //rock -> paper (1)
@@ -44,31 +46,68 @@ struct ContentView: View {
     }
     
     var body: some View {
-        VStack {
-            Text("Rock Paper Scissors!")
-            HStack {
-                ForEach(choices, id: \.self) { choice in
-                    Button(choice) {
+        
+        NavigationView {
+            
+            VStack {
+                Spacer()
+                Spacer()
+                Text("Computer's Pick: \(choices[computerChoice])")
+                    .font(.largeTitle.weight(.bold))
+                    .frame(width: 350, height: 100)
+                    .background(.blue)
+                    .cornerRadius(35)
+                    .shadow(color: .white, radius: 3)
+                    .padding()
+                Text("For the player to _**\(shouldWin ? "WIN" : "LOSE")**_ they must pick...")
+                    .font(.title2.weight(.semibold))
+                    .frame(width: 250, height: 100)
+                    .background(.secondary)
+                    .cornerRadius(35)
+                    .multilineTextAlignment(.trailing)
+                
+                Spacer()
+                Spacer()
+                
+                HStack {
+                    ForEach(0...2, id: \.self) { index in
+                        Button(choices[index]) {
+                            playerChoice = index
+                            correctResult = checkChoice(objective: shouldWin, choice: playerWon)
+                            showResult = true
+                            
+                        }
+                        .font(.largeTitle)
+                        .foregroundColor(.white)
+                        .frame(width: 100, height: 100)
+                        .background(.blue)
+                        .cornerRadius(35)
+                        .shadow(color: .white, radius: 2)
                         
                     }
-                    .foregroundColor(.white)
-                    .frame(width: 100, height: 100)
-                    .background(.blue)
-                    .cornerRadius(20)
                 }
+                Spacer()
+                
+            }
+            .padding()
+            .alert("Result", isPresented: $showResult) {
+                Button("Continue", action: resetRound)
+            } message: {
+                Text("\(correctResult ? "Player won!" : "Player lost!")")
             }
         }
-        .padding()
+        
     }
     
-    func checkChoice(objective: Bool, choice: Int) -> Bool {
-        objective && playerWon
+    func checkChoice(objective: Bool, choice: Bool) -> Bool {
+        (objective && choice) || (!objective && !choice)
+
     }
     
     func resetRound() {
         computerChoice = Int.random(in: 0...2)
         playerChoice = 0
-        shouldWin = Bool.random()
+        shouldWin.toggle()
     }
 }
 
