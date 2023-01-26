@@ -52,49 +52,39 @@ struct ContentView: View {
         NavigationView {
             
             VStack {
-
+                
                 Spacer()
                 Text("Rock Paper Scissors")
                     .font(.largeTitle.weight(.semibold))
                     .padding()
-                VStack {
+                VStack(spacing: 20) {
                     HStack {
-                        Text("Computer's Choice \n\(choices[computerChoice])")
+                        Text("Computer: \(choices[computerChoice])")
                             .font(.title.weight(.semibold))
-                            .frame(maxWidth: 400, maxHeight: 100)
-                            .background(.blue)
-                            .cornerRadius(35)
-                            .shadow(color: .black, radius: 3)
-                            .padding()
+                            .roundedStyle(maxWidth: 450, maxHeight: 200, backgroundColor: .blue, cornerRadius: 35, shadowColor: .black, shadowRadius: 3)
                             .multilineTextAlignment(.leading)
-                        Spacer()
-                        Spacer()
+                    Spacer()
                     }
-                    
+             
                     HStack {
                         Spacer()
                         Text("For the player to _**\(shouldWin ? "WIN" : "LOSE")**_ they must choose...")
                             .font(.title2.weight(.semibold))
                             .padding()
-                            .frame(maxWidth: 270, maxHeight: 100)
-                            .background(.gray)
-                            .cornerRadius(35)
-                            .shadow(color: .black, radius: 3)
-                        .multilineTextAlignment(.leading)
+                            .roundedStyle(maxWidth: 270, maxHeight: 100, backgroundColor: .gray, cornerRadius: 35, shadowColor: .black, shadowRadius: 3)
+                            .multilineTextAlignment(.leading)
                     }
+               
                 }
                 .padding()
-                .frame(maxWidth: 400, maxHeight: 300)
-//                .border(.black)
-                .background(.white)
-                .cornerRadius(35)
-                .shadow(color: .white, radius: 5)
-                
+                .roundedStyle(maxWidth: 350, maxHeight: 300, backgroundColor: .white, cornerRadius: 35, shadowColor: .white, shadowRadius: 5)
                 
                 Spacer()
                 Spacer()
+                
                 Text("Player's Choice:")
                     .font(.title)
+                
                 HStack(spacing: 20) {
                     ForEach(0...2, id: \.self) { index in
                         Button(choices[index]) {
@@ -106,21 +96,16 @@ struct ContentView: View {
                             
                         }
                         .font(.largeTitle)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: 100, maxHeight: 100)
-                        .background(.blue)
-                        .cornerRadius(35)
-                        .shadow(color: .black, radius: 2)
+                        .roundedStyle(maxWidth: 100, maxHeight: 100, backgroundColor: .blue, cornerRadius: 35, shadowColor: .black, shadowRadius: 2)
+
                         
                     }
                 }
-                .frame(maxWidth: 350, maxHeight: 100)
-                .padding()
-                .background(.white)
-                .cornerRadius(35)
-                .shadow(color: .white, radius: 5)
+                .roundedStyle(maxWidth: 350, maxHeight: 100, backgroundColor: .white, cornerRadius: 35, shadowColor: .white, shadowRadius: 5)
+
                 Text("Score: \(score)")
                     .font(.title2.weight(.semibold))
+                
                 Spacer()
                 
             }
@@ -143,7 +128,7 @@ struct ContentView: View {
     
     func checkChoice(objective: Bool, choice: Bool) -> Bool {
         (objective && choice) || (!objective && !choice)
-
+        
     }
     
     func resetRound() {
@@ -167,7 +152,7 @@ struct ContentView: View {
         } else if !result && score >= 1 {
             score -= 1
         }
-
+        
     }
 }
 
@@ -177,3 +162,33 @@ struct ContentView_Previews: PreviewProvider {
             .preferredColorScheme(.dark)
     }
 }
+
+struct RoundedBackground: ViewModifier {
+    
+
+    var maxWidth: CGFloat
+    var maxHeight: CGFloat
+    var backgroundColor: Color
+    var cornerRadius: CGFloat
+    var shadowColor: Color
+    var shadowRadius: CGFloat
+    
+    func body(content: Content) -> some View {
+        content
+            .frame(maxWidth: maxWidth, maxHeight: maxHeight)
+            .padding()
+            .background(backgroundColor)
+            .cornerRadius(cornerRadius)
+            .shadow(color: shadowColor, radius: shadowRadius)
+        
+    }
+    
+}
+
+extension View {
+    func roundedStyle(maxWidth: CGFloat, maxHeight: CGFloat, backgroundColor: Color, cornerRadius: CGFloat, shadowColor: Color, shadowRadius: CGFloat) -> some View {
+        modifier(RoundedBackground(maxWidth: maxWidth, maxHeight: maxHeight, backgroundColor: backgroundColor, cornerRadius: cornerRadius, shadowColor: shadowColor, shadowRadius: shadowRadius) )
+    }
+}
+
+
