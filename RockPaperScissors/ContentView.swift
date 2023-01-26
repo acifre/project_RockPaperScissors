@@ -20,6 +20,8 @@ struct ContentView: View {
     @State private var shouldWin = false
     @State private var showResult = false
     @State private var correctResult = false
+    @State private var score = 0
+    @State private var numberOfTurns = 0
     
     
     let choices = ["👊", "🖐️", "✌️"]
@@ -52,25 +54,29 @@ struct ContentView: View {
             VStack {
 
                 Spacer()
+                Text("Rock Paper Scissors")
+                    .font(.largeTitle.weight(.semibold))
+                    .padding()
                 VStack {
                     HStack {
-                        Text("Computer's Pick \n\(choices[computerChoice])")
-                            .font(.largeTitle.weight(.bold))
-                            .frame(width: 350, height: 100)
+                        Text("Computer's Choice \n\(choices[computerChoice])")
+                            .font(.title.weight(.semibold))
+                            .frame(maxWidth: 400, maxHeight: 100)
                             .background(.blue)
                             .cornerRadius(35)
                             .shadow(color: .black, radius: 3)
                             .padding()
                             .multilineTextAlignment(.leading)
                         Spacer()
+                        Spacer()
                     }
                     
                     HStack {
                         Spacer()
-                        Text("For the player to _**\(shouldWin ? "WIN" : "LOSE")**_ they must pick...")
+                        Text("For the player to _**\(shouldWin ? "WIN" : "LOSE")**_ they must choose...")
                             .font(.title2.weight(.semibold))
                             .padding()
-                            .frame(width: 250, height: 100)
+                            .frame(maxWidth: 270, maxHeight: 100)
                             .background(.gray)
                             .cornerRadius(35)
                             .shadow(color: .black, radius: 3)
@@ -82,42 +88,55 @@ struct ContentView: View {
 //                .border(.black)
                 .background(.white)
                 .cornerRadius(35)
+                .shadow(color: .white, radius: 5)
                 
                 
                 Spacer()
                 Spacer()
-                
+                Text("Player's Choice:")
+                    .font(.title)
                 HStack(spacing: 20) {
                     ForEach(0...2, id: \.self) { index in
                         Button(choices[index]) {
                             playerChoice = index
                             correctResult = checkChoice(objective: shouldWin, choice: playerWon)
+                            changeScore(result: correctResult)
+                            numberOfTurns += 1
                             showResult = true
                             
                         }
                         .font(.largeTitle)
                         .foregroundColor(.white)
-                        .frame(width: 100, height: 100)
+                        .frame(maxWidth: 100, maxHeight: 100)
                         .background(.blue)
                         .cornerRadius(35)
                         .shadow(color: .black, radius: 2)
                         
                     }
                 }
-                .frame(width: 350, height: 100)
+                .frame(maxWidth: 350, maxHeight: 100)
                 .padding()
                 .background(.white)
                 .cornerRadius(35)
+                .shadow(color: .white, radius: 5)
+                Text("Score: \(score)")
+                    .font(.title2.weight(.semibold))
                 Spacer()
                 
             }
-            .padding()
-            .alert("Result", isPresented: $showResult) {
-                Button("Continue", action: resetRound)
+            .padding(.horizontal)
+            .alert(correctResult ? "Correct!" : "Wrong!", isPresented: $showResult) {
+                Button(numberOfTurns <= 10 ? "Continue" : "Reset Game", action: numberOfTurns <= 10 ? resetRound : resetGame)
             } message: {
-                Text("\(correctResult ? "Player won!" : "Player lost!")")
+                if numberOfTurns <= 10 {
+                    Text("\(correctResult ? "Player won!" : "Player lost!")")
+                } else {
+                    Text("Game over... final score: \(score)")
+                }
+                
             }
             .navigationTitle("RockPaperScissors")
+            .navigationBarTitleDisplayMode(.inline)
         }
         
     }
@@ -131,6 +150,24 @@ struct ContentView: View {
         computerChoice = Int.random(in: 0...2)
         playerChoice = 0
         shouldWin.toggle()
+    }
+    
+    func resetGame() {
+        computerChoice = Int.random(in: 0...2)
+        playerChoice = 0
+        shouldWin.toggle()
+        score = 0
+        numberOfTurns = 0
+    }
+    
+    func changeScore(result: Bool) {
+        
+        if result {
+            score += 1
+        } else if !result && score >= 1 {
+            score -= 1
+        }
+
     }
 }
 
