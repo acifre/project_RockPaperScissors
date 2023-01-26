@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-//Each turn of the game the app will randomly pick either rock, paper, or scissors.
-//Each turn the app will alternate between prompting the player to win or lose.
-//The player must then tap the correct move to win or lose the game.
-//If they are correct they score a point; otherwise they lose a point.
-//The game ends after 10 questions, at which point their score is shown.
 
 struct ContentView: View {
     
@@ -54,18 +49,20 @@ struct ContentView: View {
             VStack {
                 
                 Spacer()
+                
                 Text("Rock Paper Scissors")
                     .font(.largeTitle.weight(.semibold))
                     .padding()
+                
                 VStack(spacing: 20) {
                     HStack {
                         Text("Computer: \(choices[computerChoice])")
                             .font(.title.weight(.semibold))
                             .roundedStyle(maxWidth: 450, maxHeight: 200, backgroundColor: .blue, cornerRadius: 35, shadowColor: .black, shadowRadius: 3)
                             .multilineTextAlignment(.leading)
-                    Spacer()
+                        Spacer()
                     }
-             
+                    
                     HStack {
                         Spacer()
                         Text("For the player to _**\(shouldWin ? "WIN" : "LOSE")**_ they must choose...")
@@ -74,7 +71,7 @@ struct ContentView: View {
                             .roundedStyle(maxWidth: 270, maxHeight: 100, backgroundColor: .gray, cornerRadius: 35, shadowColor: .black, shadowRadius: 3)
                             .multilineTextAlignment(.leading)
                     }
-               
+                    
                 }
                 .padding()
                 .roundedStyle(maxWidth: 350, maxHeight: 300, backgroundColor: .white, cornerRadius: 35, shadowColor: .white, shadowRadius: 5)
@@ -97,12 +94,12 @@ struct ContentView: View {
                         }
                         .font(.largeTitle)
                         .roundedStyle(maxWidth: 100, maxHeight: 100, backgroundColor: .blue, cornerRadius: 35, shadowColor: .black, shadowRadius: 2)
-
+                        
                         
                     }
                 }
                 .roundedStyle(maxWidth: 350, maxHeight: 100, backgroundColor: .white, cornerRadius: 35, shadowColor: .white, shadowRadius: 5)
-
+                
                 Text("Score: \(score)")
                     .font(.title2.weight(.semibold))
                 
@@ -165,7 +162,7 @@ struct ContentView_Previews: PreviewProvider {
 
 struct RoundedBackground: ViewModifier {
     
-
+    
     var maxWidth: CGFloat
     var maxHeight: CGFloat
     var backgroundColor: Color
